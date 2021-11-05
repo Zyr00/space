@@ -11,16 +11,10 @@ Entity *player;
 SDL_Texture *bulletTexture;
 
 int main(void) {
-  long then;
-  float remainder;
-
   memset(&app, 0, sizeof(App));
 
   initSDL();
   initStage();
-
-  then = SDL_GetTicks();
-  remainder = 0;
 
   while (app.running) {
     prepareScene();
