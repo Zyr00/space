@@ -42,7 +42,7 @@ static void fireBullet(void) {
   stage.bulletTail->next = b;
   stage.bulletTail = b;
 
-  b->x = player->x;
+  b->x = player->x + 18;
   b->y = player->y;
   b->dx = BULLET_SPEED;
   b->health = 1;
@@ -50,7 +50,7 @@ static void fireBullet(void) {
   SDL_QueryTexture(b->texture, NULL, NULL, &b->w, &b->h);
 
   b->y += (player->h / 2) - (b->h / 2);
-  player->reload = 0;
+  player->reload = 8;
 }
 
 static void doBullets(void) {
