@@ -43,7 +43,8 @@ void initStage(void) {
  initPlayer();
 
  bulletTexture = loadTexture("./assets/bullet.png");
- enemyTexture = loadTexture("./assets/enemy.png");
+ enemyTexture1 = loadTexture("./assets/enemy1.png");
+ enemyTexture2 = loadTexture("./assets/enemy2.png");
 
  enemySpawnTimer = 0;
 }

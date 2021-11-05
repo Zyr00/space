@@ -4,5 +4,6 @@
 #include <sys/param.h>
 
 int collision(int, int, int, int, int, int, int, int);
+float randomNumber(const float, const float);
 
 #endif

@@ -13,7 +13,7 @@
 extern App app;
 extern Stage stage;
 extern Entity *player;
-extern SDL_Texture *bulletTexture, *enemyTexture;
+extern SDL_Texture *bulletTexture, *enemyTexture1, *enemyTexture2;
 extern int enemySpawnTimer;
 
 void err(const char *, ...);

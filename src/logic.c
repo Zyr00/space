@@ -89,9 +89,10 @@ static void spawnEnemies(void) {
 
     e->side = SIDE_ALIEN;
     e->health = 1;
+    if (randomNumber(0, 1) <= 0.02) e->health += rand() % 5;
     e->x = SCREEN_WIDTH;
     e->y = rand() % SCREEN_HEIGHT;
-    e->texture = enemyTexture;
+    e->texture = e->health <= 1 ? enemyTexture1 : enemyTexture2;
     SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h);
 
     e->dx = -(2 + (rand() % 4));
@@ -127,7 +128,7 @@ static int bulletHitFighter(Entity *b) {
   for (e = stage.fighterHead.next; e != NULL; e = e->next) {
     if (e->side != b->side && collision(b->x, b->y, b->w, b->h, e->x, e->y, e->w, e->h)) {
       b->health = 0;
-      e->health = 0;
+      e->health--;
       return 1;
     }
   }
