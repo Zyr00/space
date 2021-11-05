@@ -43,6 +43,9 @@ void initStage(void) {
  initPlayer();
 
  bulletTexture = loadTexture("./assets/bullet.png");
+ enemyTexture = loadTexture("./assets/enemy.png");
+
+ enemySpawnTimer = 0;
 }
 
 static void initPlayer(void) {
@@ -51,6 +54,7 @@ static void initPlayer(void) {
   stage.fighterTail->next = player;
   stage.fighterTail = player;
 
+  player->side = SIDE_PLAYER;
   player->x = 100;
   player->y = 100;
   player->texture = loadTexture("./assets/player.png");

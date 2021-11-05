@@ -8,7 +8,8 @@
 App app;
 Stage stage;
 Entity *player;
-SDL_Texture *bulletTexture;
+SDL_Texture *bulletTexture, *enemyTexture;
+int enemySpawnTimer;
 
 int main(void) {
   memset(&app, 0, sizeof(App));

@@ -4,10 +4,14 @@
 static void doPlayer(void);
 static void fireBullet(void);
 static void doBullets(void);
+static void spawnEnemies(void);
+static void doFighters(void);
 
 void logic(void) {
   doPlayer();
+  doFighters();
   doBullets();
+  spawnEnemies();
 }
 
 static void doPlayer(void) {
@@ -42,6 +46,7 @@ static void fireBullet(void) {
   stage.bulletTail->next = b;
   stage.bulletTail = b;
 
+  b->side = SIDE_PLAYER;
   b->x = player->x + 18;
   b->y = player->y;
   b->dx = BULLET_SPEED;
@@ -69,5 +74,47 @@ static void doBullets(void) {
       b = prev;
     }
     prev = b;
+  }
+}
+
+static void spawnEnemies(void) {
+  Entity *e;
+
+  if (--enemySpawnTimer <= 0) {
+    e = (Entity *) malloc(sizeof(Entity));
+    memset(e, 0, sizeof(Entity));
+    stage.fighterTail->next = e;
+    stage.fighterTail = e;
+
+    e->side = SIDE_ALIEN;
+    e->x = SCREEN_WIDTH;
+    e->y = rand() % SCREEN_HEIGHT;
+    e->texture = enemyTexture;
+    SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h);
+
+    e->dx = -(2 + (rand() % 4));
+    enemySpawnTimer = 30 + (rand() % 60);
+  }
+}
+
+static void doFighters(void) {
+  Entity *e, *prev;
+
+  prev = &stage.fighterHead;
+
+  for (e = stage.fighterHead.next; e != NULL; e = e->next) {
+    e->x += e->dx;
+    e->y += e->dy;
+
+    if (e != player && e->x < -e->w) {
+      if (e == stage.fighterTail) {
+        stage.fighterTail = prev;
+      }
+
+      prev->next = e->next;
+      free(e);
+      e = prev;
+    }
+    prev = e;
   }
 }
