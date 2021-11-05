@@ -16,6 +16,8 @@ HDRS = $(wildcard $(HDIR)/*.h)
 
 BIN = main
 
+
+
 all: $(BIN)
 
 $(BIN): $(ODIRS) $(ODIR) $(HDRS)
@@ -29,4 +31,8 @@ $(ODIR):
 
 clean:
 	rm -fr $(ODIR)
+ifneq ("$(wildcard ./$(BIN))","")
 	rm $(BIN)
+endif
+
+
