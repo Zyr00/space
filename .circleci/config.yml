@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: make
+          command: make clean; make
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
