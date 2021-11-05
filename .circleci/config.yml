@@ -16,6 +16,7 @@ jobs:
       - run:
           name: "Build"
           command: "make"
+    working_directory: ~/space
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
