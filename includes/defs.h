@@ -1,6 +1,10 @@
 #ifndef __DEFS_H__
 #define __DEFS_H__
 
+#define COLOR_R 7
+#define COLOR_G 13
+#define COLOR_B 13
+
 #define WINDOW_NAME "A SUPPER DUPPER GAME"
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720

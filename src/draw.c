@@ -5,7 +5,7 @@ static void drawBullets(void);
 static void drawFighters(void);
 
 void prepareScene() {
-  SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, SDL_ALPHA_OPAQUE);
+  SDL_SetRenderDrawColor(app.renderer, COLOR_R, COLOR_G, COLOR_B, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(app.renderer);
 }
 

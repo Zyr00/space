@@ -8,6 +8,7 @@
 
 #include "defs.h"
 #include "structs.h"
+#include "util.h"
 
 extern App app;
 extern Stage stage;

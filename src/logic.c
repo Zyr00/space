@@ -6,6 +6,7 @@ static void fireBullet(void);
 static void doBullets(void);
 static void spawnEnemies(void);
 static void doFighters(void);
+static int bulletHitFighter(Entity *);
 
 void logic(void) {
   doPlayer();
@@ -67,7 +68,7 @@ static void doBullets(void) {
     b->x += b->dx;
     b->y += b->dy;
 
-    if (b->x > SCREEN_WIDTH) {
+    if (bulletHitFighter(b) || b->x > SCREEN_WIDTH) {
       if (b == stage.bulletTail) stage.bulletTail = prev;
       prev->next = b->next;
       free(b);
@@ -87,6 +88,7 @@ static void spawnEnemies(void) {
     stage.fighterTail = e;
 
     e->side = SIDE_ALIEN;
+    e->health = 1;
     e->x = SCREEN_WIDTH;
     e->y = rand() % SCREEN_HEIGHT;
     e->texture = enemyTexture;
@@ -106,7 +108,7 @@ static void doFighters(void) {
     e->x += e->dx;
     e->y += e->dy;
 
-    if (e != player && e->x < -e->w) {
+    if (e != player && (e->x < -e->w || e->health == 0)) {
       if (e == stage.fighterTail) {
         stage.fighterTail = prev;
       }
@@ -117,4 +119,17 @@ static void doFighters(void) {
     }
     prev = e;
   }
+}
+
+static int bulletHitFighter(Entity *b) {
+  Entity *e;
+
+  for (e = stage.fighterHead.next; e != NULL; e = e->next) {
+    if (e->side != b->side && collision(b->x, b->y, b->w, b->h, e->x, e->y, e->w, e->h)) {
+      b->health = 0;
+      e->health = 0;
+      return 1;
+    }
+  }
+  return 0;
 }
