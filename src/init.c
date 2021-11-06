@@ -1,9 +1,5 @@
 #include "../includes/init.h"
 #include "../includes/common.h"
-#include "../includes/draw.h"
-#include "../includes/logic.h"
-
-static void initPlayer(void);
 
 void initSDL(void) {
   int rendererFlags, windowsFlags;
@@ -30,36 +26,6 @@ void initSDL(void) {
     err("Failed to load suport of images: %s\n", IMG_GetError());
 
   app.running = 1;
-}
-
-void initStage(void) {
- app.delegate.logic = logic;
- app.delegate.draw = draw;
-
- memset(&stage, 0, sizeof(Stage));
- stage.fighterTail = &stage.fighterHead;
- stage.bulletTail = &stage.bulletHead;
-
- initPlayer();
-
- bulletTexture = loadTexture("./assets/bullet.png");
- enemyTexture1 = loadTexture("./assets/enemy1.png");
- enemyTexture2 = loadTexture("./assets/enemy2.png");
-
- enemySpawnTimer = 0;
-}
-
-static void initPlayer(void) {
-  player = (Entity *) malloc(sizeof(Entity));
-  memset(player, 0, sizeof(Entity));
-  stage.fighterTail->next = player;
-  stage.fighterTail = player;
-
-  player->side = SIDE_PLAYER;
-  player->x = 100;
-  player->y = 100;
-  player->texture = loadTexture("./assets/player.png");
-  SDL_QueryTexture(player->texture, NULL, NULL, &player->w, &player->h);
 }
 
 void finishSDL(void) {

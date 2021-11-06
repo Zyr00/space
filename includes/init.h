@@ -4,7 +4,6 @@
 #include "common.h"
 
 void initSDL(void);
-void initStage(void);
 
 void finishSDL(void);
 
