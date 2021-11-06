@@ -3,5 +3,6 @@
 
 #include "common.h"
 
-void logic(void);
+void initStage(void);
+
 #endif

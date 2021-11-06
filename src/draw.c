@@ -1,11 +1,11 @@
 #include "../includes/draw.h"
 #include "../includes/common.h"
 
-static void drawPlayer(void);
 static void drawBullets(void);
+static void drawFighters(void);
 
 void prepareScene() {
-  SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, SDL_ALPHA_OPAQUE);
+  SDL_SetRenderDrawColor(app.renderer, COLOR_R, COLOR_G, COLOR_B, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(app.renderer);
 }
 
@@ -31,17 +31,20 @@ void blit(SDL_Texture *texture, const int x, const int y)  {
 }
 
 void draw(void) {
-  drawPlayer();
+  drawFighters();
   drawBullets();
-}
-
-static void drawPlayer(void)  {
-  blit(player->texture, player->x, player->y);
 }
 
 static void drawBullets(void)  {
   Entity *b;
 
   for (b = stage.bulletHead.next; b != NULL;  b = b->next)
+    blit(b->texture, b->x, b->y);
+}
+
+static void drawFighters(void) {
+  Entity *b;
+
+  for (b = stage.fighterHead.next; b != NULL;  b = b->next)
     blit(b->texture, b->x, b->y);
 }
