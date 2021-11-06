@@ -3,6 +3,10 @@
 
 static void drawBullets(void);
 static void drawFighters(void);
+// static void drawBackground(void);
+static void drawStarfield(void);
+static void drawDebris(void);
+static void drawExplosions(void);
 
 void prepareScene() {
   SDL_SetRenderDrawColor(app.renderer, COLOR_R, COLOR_G, COLOR_B, SDL_ALPHA_OPAQUE);
@@ -30,9 +34,24 @@ void blit(SDL_Texture *texture, const int x, const int y)  {
   SDL_RenderCopy(app.renderer, texture, NULL, &dest);
 }
 
+void blitRect(SDL_Texture *texture, SDL_Rect *src, const int x, const int y) {
+  SDL_Rect dest;
+
+  dest.x = x;
+  dest.y = y;
+  dest.w = src->w;
+  dest.h = src->h;
+
+  SDL_RenderCopy(app.renderer, texture, src, &dest);
+}
+
 void draw(void) {
+  // drawBackground();
+  drawStarfield();
   drawFighters();
   drawBullets();
+  drawDebris();
+  drawExplosions();
 }
 
 static void drawBullets(void)  {
@@ -47,4 +66,38 @@ static void drawFighters(void) {
 
   for (b = stage.fighterHead.next; b != NULL;  b = b->next)
     blit(b->texture, b->x, b->y);
+}
+
+static void drawStarfield(void) {
+  int i, c;
+
+  for (i = 0; i < MAX_STARS; i++) {
+    c = 32 * stars[i].speed;
+    SDL_SetRenderDrawColor(app.renderer, c, c, c, 255);
+    SDL_RenderDrawLine(app.renderer, stars[i].x, stars[i].y, stars[i].x + 3, stars[i].y);
+  }
+}
+
+static void drawDebris(void) {
+  Debris *d;
+
+  for (d = stage.debrisHead.next; d != NULL; d = d->next) {
+    blitRect(d->texture, &d->rect, d->x, d->y);
+  }
+}
+
+static void drawExplosions(void) {
+  Explosion *e;
+
+  SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_ADD);
+  SDL_SetTextureBlendMode(explosionTexture, SDL_BLENDMODE_ADD);
+
+  for (e = stage.explosionHead.next; e != NULL; e = e->next) {
+    SDL_SetTextureColorMod(explosionTexture, e->r, e->g, e->b);
+    SDL_SetTextureAlphaMod(explosionTexture, e->a);
+
+    blit(explosionTexture, e->x, e->y);
+  }
+
+  SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
 }

@@ -15,7 +15,8 @@
 extern App app;
 extern Stage stage;
 extern Entity *player;
-extern int enemySpawnTimer, stageResetTimer;
+extern Star stars[MAX_STARS];
+extern SDL_Texture *explosionTexture;
 
 void err(const char *, ...);
 
