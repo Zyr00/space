@@ -33,9 +33,33 @@ struct Entity {
 
 typedef struct Entity Entity;
 
+struct Explosion {
+  float x, y, dx, dy;
+  int r, g, b, a;
+  struct Explosion *next;
+};
+
+typedef struct Explosion Explosion;
+
+struct Debris {
+  float x, y, dx, dy;
+  SDL_Rect rect;
+  SDL_Texture *texture;
+  int life;
+  struct Debris *next;
+};
+
+typedef struct Debris Debris;
+
 typedef struct {
   Entity fighterHead, *fighterTail;
   Entity bulletHead, *bulletTail;
+  Explosion explosionHead, *explosionTail;
+  Debris debrisHead, *debrisTail;
 } Stage;
+
+typedef struct {
+  int x, y, speed;
+} Star;
 
 #endif

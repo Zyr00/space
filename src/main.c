@@ -13,7 +13,7 @@ static void capFramerate(long *then, float  *remainder);
 App app;
 Stage stage;
 Entity *player;
-int enemySpawnTimer, stageResetTimer;
+Star stars[MAX_STARS];
 
 int main(void) {
   long then;
