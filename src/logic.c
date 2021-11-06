@@ -15,7 +15,7 @@ static void clipPlayer(void);
 static void fireEnemyBullet(Entity *);
 static void doEnemies(void);
 
-static SDL_Texture *playerTexture, *playerBulletTexture, *enemyTexture1, *enemyTexture2, *enemyBulletTexture;
+static SDL_Texture *playerTexture, *playerBulletTexture, *enemyTexture, *enemyTexture1, *enemyTexture2, *enemyBulletTexture;
 
 void initStage(void) {
  app.delegate.logic = logic;
@@ -26,6 +26,7 @@ void initStage(void) {
  stage.bulletTail = &stage.bulletHead;
 
  playerBulletTexture = loadTexture("./assets/bullet.png");
+ enemyTexture = loadTexture("./assets/enemy.png");
  enemyTexture1 = loadTexture("./assets/enemy1.png");
  enemyTexture2 = loadTexture("./assets/enemy2.png");
  enemyBulletTexture = loadTexture("./assets/bullet.png");
@@ -147,13 +148,17 @@ static void fireEnemyBullet(Entity *e) {
   b->texture = enemyBulletTexture;
   SDL_QueryTexture(b->texture, NULL, NULL, &b->w, &b->h);
 
+  b->dx = -1;
   b->x += (e->w / 2) - (b->w / 2);
-  b->y += (e->h / 2) - (b->h / 2);
 
-  calcSlope(player->x + (player->w / 2), player->y + (player->h / 2), e->x, e->y, &b->dx, &b->dy);
+  if (e->type != 1) {
+    calcSlope(player->x + (player->w / 2), player->y + (player->h / 2), e->x, e->y, &b->dx, &b->dy);
+    b->y += (e->h / 2) - (b->h / 2);
+    b->dy *= ALIEN_BULLET_SPEED;
+  }
 
   b->dx *= ALIEN_BULLET_SPEED;
-  b->dy *= ALIEN_BULLET_SPEED;
+
   e->reload = (rand() % FPS * 2);
 }
 
@@ -189,14 +194,28 @@ static void spawnEnemies(void) {
     stage.fighterTail = e;
 
     e->side = SIDE_ALIEN;
+    e->reload = FPS * (1 + (rand() % 3));
+
+    e->type = (int) randomNumber(1, 2);
     e->health = 1;
-    if (randomNumber(0, 1) <= 0.02) e->health += rand() % 5;
-    e->x = SCREEN_WIDTH;
-    e->y = rand() % SCREEN_HEIGHT;
-    e->texture = e->health <= 1 ? enemyTexture1 : enemyTexture2;
+
+    if (e->type == 1) {
+      e->texture = enemyTexture;
+    } else {
+      e->texture = enemyTexture1;
+    }
+
+    if (randomNumber(0, 1) <= 0.01)  {
+      e->type = 3;
+      e->health += rand() % 5;
+      e->texture = enemyTexture2;
+    }
+
     SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h);
 
-    e->reload = FPS * (1 + (rand() % 3));
+    e->x = SCREEN_WIDTH;
+    e->y = (int) randomNumber(e->h, SCREEN_HEIGHT);
+
     e->dx = -(2 + (rand() % 4));
 
     enemySpawnTimer = 30 + (rand() % 60);
@@ -254,7 +273,8 @@ static void doEnemies(void) {
 
   for (e = stage.fighterHead.next; e != NULL; e = e->next) {
     if (e != player && player != NULL && --e->reload <= 0) {
-      fireEnemyBullet(e);
+      if (e->x > e->h + 100)
+        fireEnemyBullet(e);
     }
   }
 }

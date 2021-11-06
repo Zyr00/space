@@ -26,6 +26,7 @@ struct Entity {
   int health;
   int reload;
   int side;
+  int type;
   SDL_Texture *texture;
   struct Entity *next;
 };
