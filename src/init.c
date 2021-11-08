@@ -25,6 +25,11 @@ void initSDL(void) {
   if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) == 0)
     err("Failed to load suport of images: %s\n", IMG_GetError());
 
+  if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) == -1)
+    err("Faild to inicialize SDL Mixer", SDL_GetError());
+
+  Mix_AllocateChannels(MAX_SND_CHANNELS);
+
   app.running = 1;
 }
 

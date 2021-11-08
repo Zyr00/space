@@ -5,6 +5,7 @@
 #include "../includes/logic.h"
 #include "../includes/draw.h"
 #include "../includes/input.h"
+#include "../includes/sound.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -23,6 +24,7 @@ int main(void) {
   memset(&app, 0, sizeof(App));
 
   initSDL();
+  initSounds();
   initStage();
 
   then = SDL_GetTicks();

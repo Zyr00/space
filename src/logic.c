@@ -1,6 +1,7 @@
 #include "../includes/logic.h"
 #include "../includes/common.h"
 #include "../includes/draw.h"
+#include "../includes/sound.h"
 
 static void logic(void);
 static void initPlayer(void);
@@ -158,6 +159,7 @@ static void doPlayer(void) {
       player->dx = PLAYER_SPEED;
 
     if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) {
+      playSound(SND_PLAYER_FIRE, CH_PLAYER);
       fireBullet();
     }
 
@@ -308,6 +310,15 @@ static int bulletHitFighter(Entity *b) {
 
   for (e = stage.fighterHead.next; e != NULL; e = e->next) {
     if (e->side != b->side && collision(b->x, b->y, b->w, b->h, e->x, e->y, e->w, e->h)) {
+      if (e == player) {
+        playSound(SND_PLAYER_DIE, CH_PLAYER);
+        if ((e->health - 1) == 0) {
+          stopMusic();
+          playSound(SND_GAMEOVER, CH_GAMEOVER);
+        }
+      } else {
+        playSound(SND_ALIEN_DIE, CH_ANY);
+      }
       b->health = 0;
       e->health--;
       if (e->health == 0) {
@@ -334,8 +345,10 @@ static void doEnemies(void) {
 
   for (e = stage.fighterHead.next; e != NULL; e = e->next) {
     if (e != player && player != NULL && --e->reload <= 0) {
-      if (e->x > e->h + 100)
+      if (e->x > e->h + 100) {
+        playSound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
         fireEnemyBullet(e);
+      }
     }
   }
 }
