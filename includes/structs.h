@@ -51,11 +51,22 @@ struct Debris {
 
 typedef struct Debris Debris;
 
+struct Trail {
+  float x, y;
+  SDL_Texture *texture;
+  Entity *e;
+  int a;
+  struct Trail *next;
+};
+
+typedef struct Trail Trail;
+
 typedef struct {
   Entity fighterHead, *fighterTail;
   Entity bulletHead, *bulletTail;
   Explosion explosionHead, *explosionTail;
   Debris debrisHead, *debrisTail;
+  Trail trailHead, *trailTail;
 } Stage;
 
 typedef struct {
