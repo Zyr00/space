@@ -3,10 +3,10 @@
 
 static void drawBullets(void);
 static void drawFighters(void);
-// static void drawBackground(void);
 static void drawStarfield(void);
 static void drawDebris(void);
 static void drawExplosions(void);
+static void drawTrails(void);
 
 void prepareScene() {
   SDL_SetRenderDrawColor(app.renderer, COLOR_R, COLOR_G, COLOR_B, SDL_ALPHA_OPAQUE);
@@ -46,12 +46,12 @@ void blitRect(SDL_Texture *texture, SDL_Rect *src, const int x, const int y) {
 }
 
 void draw(void) {
-  // drawBackground();
   drawStarfield();
   drawFighters();
   drawBullets();
   drawDebris();
   drawExplosions();
+  drawTrails();
 }
 
 static void drawBullets(void)  {
@@ -100,4 +100,12 @@ static void drawExplosions(void) {
   }
 
   SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
+}
+
+static void drawTrails(void) {
+  Trail *t;
+
+  for (t = stage.trailHead.next; t != NULL; t = t->next) {
+    blit(t->texture, t->x, t->y);
+  }
 }

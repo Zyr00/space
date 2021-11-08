@@ -15,18 +15,19 @@ static void clipPlayer(void);
 static void fireEnemyBullet(Entity *);
 static void doEnemies(void);
 static void initStarfield(void);
-static void doBackground(void);
 static void doStarfield(void);
 static void doExplosions(void);
 static void doDebris(void);
+static void doTrail(void);
 static void addExplosion(int x, int y, int num);
 static void addDebris(Entity *);
+static void addTrail(Entity *);
 
 
 static SDL_Texture *playerTexture,
   *playerBulletTexture, *enemyBulletTexture,
   *enemyTexture, *enemyTexture1, *enemyTexture2,
-  *backgroundTexture;
+  *playerTrail, *enemyTrail;
 
 SDL_Texture *explosionTexture;
 
@@ -42,23 +43,22 @@ void initStage(void) {
  stage.explosionTail = &stage.explosionHead;
  stage.debrisTail = &stage.debrisHead;
 
+ playerTexture = loadTexture("./assets/player.png");
+ playerTrail = loadTexture("./assets/ptrail.png");
  playerBulletTexture = loadTexture("./assets/bullet.png");
+
  enemyTexture = loadTexture("./assets/enemy.png");
  enemyTexture1 = loadTexture("./assets/enemy1.png");
  enemyTexture2 = loadTexture("./assets/enemy2.png");
+ enemyTrail = loadTexture("./assets/etrail.png");
  enemyBulletTexture = loadTexture("./assets/bullet.png");
- playerTexture = loadTexture("./assets/player.png");
 
- backgroundTexture = loadTexture("");
  explosionTexture = loadTexture("./assets/explosion.png");
-
- // doBackgroundX = 0;
 
  resetStage();
 }
 
 static void logic(void) {
-  // doBackground();
   doStarfield();
   doPlayer();
   doFighters();
@@ -69,6 +69,7 @@ static void logic(void) {
 
   doExplosions();
   doDebris();
+  doTrail();
 
   if (player == NULL && --stageResetTimer <= 0) {
     resetStage();
@@ -79,6 +80,7 @@ static void resetStage(void) {
   Entity *e;
   Explosion *ex;
   Debris *d;
+  Trail *t;
 
   while (stage.fighterHead.next) {
     e = stage.fighterHead.next;
@@ -104,11 +106,18 @@ static void resetStage(void) {
     free(d);
   }
 
+  while (stage.trailHead.next) {
+    t = stage.trailHead.next;
+    stage.trailHead.next = t->next;
+    free(t);
+  }
+
   memset(&stage, 0, sizeof(Stage));
   stage.fighterTail = &stage.fighterHead;
   stage.bulletTail = &stage.bulletHead;
   stage.explosionTail = &stage.explosionHead;
   stage.debrisTail = &stage.debrisHead;
+  stage.trailTail = &stage.trailHead;
 
   initPlayer();
   initStarfield();
@@ -129,6 +138,7 @@ static void initPlayer(void) {
   player->health = 10;
   player->texture = playerTexture;
   SDL_QueryTexture(player->texture, NULL, NULL, &player->w, &player->h);
+  addTrail(player);
 }
 
 static void doPlayer(void) {
@@ -264,6 +274,8 @@ static void spawnEnemies(void) {
     e->dx = -(2 + (rand() % 4));
 
     enemySpawnTimer = 30 + (rand() % 60);
+
+    addTrail(e);
   }
 }
 
@@ -338,12 +350,6 @@ static void initStarfield(void) {
   }
 }
 
-static void doBackground(void) {
-  // if (--doBackgroundX < -SCREEN_WIDTH) {
-  //  doBackgroundX = 0;
-  // }
-}
-
 static void doStarfield(void) {
   int i;
   for (i = 0; i < MAX_STARS; i++) {
@@ -395,6 +401,29 @@ static void doDebris(void) {
       d = prev;
     }
     prev = d;
+  }
+}
+
+static void doTrail(void) {
+  Trail *t, *prev;
+
+  prev = &stage.trailHead;
+
+  for (t = stage.trailHead.next; t != NULL; t = t->next) {
+    t->x = t->e->x + t->e->w;
+    if (t->e == player)
+      t->x = t->e->x + -t->e->w;
+    t->y = t->e->y;
+
+    if (t->e->health == 0) {
+      if (t == stage.trailTail)
+        stage.trailTail = prev;
+
+      prev->next = t->next;
+      free(t);
+      t = prev;
+    }
+    prev = t;
   }
 }
 
@@ -467,4 +496,21 @@ static void addDebris(Entity *e) {
       d->rect.h = h;
     }
   }
+}
+
+static void addTrail(Entity *e) {
+  Trail *t;
+
+  t = (Trail *) malloc(sizeof(Trail));
+  memset(t, 0, sizeof(Trail));
+  stage.trailTail->next = t;
+  stage.trailTail= t;
+
+  t->x = e->x + e->w;
+  if (e == player)
+    t->x = e->x + -e->w;
+  t->y = e->y;
+  t->texture = e == player ? playerTrail : enemyTrail;
+  t->e = e;
+  t->a = rand() % FPS * 3;
 }
