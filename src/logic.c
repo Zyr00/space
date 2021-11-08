@@ -125,6 +125,9 @@ static void resetStage(void) {
 
   enemySpawnTimer = 0;
   stageResetTimer = FPS * 2;
+
+  SDL_Delay(16);
+  playMusic(1);
 }
 
 static void initPlayer(void) {
@@ -135,7 +138,7 @@ static void initPlayer(void) {
 
   player->side = SIDE_PLAYER;
   player->x = 100;
-  player->y = 100;
+  player->y = rand() % SCREEN_HEIGHT;
   player->health = 10;
   player->texture = playerTexture;
   SDL_QueryTexture(player->texture, NULL, NULL, &player->w, &player->h);

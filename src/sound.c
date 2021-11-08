@@ -19,7 +19,6 @@ void initSounds(void) {
   Mix_Volume(SND_GAMEOVER, MIX_MAX_VOLUME);
 
   loadMusic("sounds/The Novis Base.wav");
-  playMusic(1);
 
   Mix_VolumeMusic(MIX_MAX_VOLUME/2);
 }
