@@ -1,3 +1,11 @@
+/**
+ * @file logic.c
+ * @author João Cunha
+ * @brief Controls the logic of the game
+ *
+ * This file is responsible for controlling the game
+ * what appends to the enemies and others.
+ */
 #include "../includes/logic.h"
 #include "../includes/common.h"
 #include "../includes/draw.h"

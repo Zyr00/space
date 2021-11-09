@@ -1,6 +1,11 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
 
+#include "common.h"
+
+extern Mix_Chunk *sounds[SND_MAX];
+extern Mix_Music *music;
+
 /**
  * Initialize sounds with the SDL_Mixer lib.
  */

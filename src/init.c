@@ -1,5 +1,13 @@
+/**
+ * @file init.c
+ * @author João Cunha
+ * @brief Initializer for SDL
+ *
+ * Initializes SDL, SDL_Image and SDL_Mixer
+ */
 #include "../includes/init.h"
 #include "../includes/common.h"
+#include "../includes/sound.h"
 
 void initSDL(void) {
   int rendererFlags, windowsFlags;
@@ -34,7 +42,21 @@ void initSDL(void) {
 }
 
 void finishSDL(void) {
+  int i;
+
   IMG_Quit();
+  Mix_Quit();
+
+  for (i = 0; i < SND_MAX; i++)
+    Mix_FreeChunk(sounds[i]);
+
+  if (music != NULL) {
+    Mix_HaltMusic();
+    Mix_FreeMusic(music);
+  }
+
+  Mix_CloseAudio();
+
   SDL_DestroyRenderer(app.renderer);
   SDL_DestroyWindow(app.window);
   SDL_Quit();

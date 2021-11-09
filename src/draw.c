@@ -1,3 +1,10 @@
+/**
+ * @file draw.c
+ * @author João Cunha
+ * @brief Render/Draw to screen
+ *
+ * Prepare the scene and draw on the scene
+ */
 #include "../includes/draw.h"
 #include "../includes/common.h"
 

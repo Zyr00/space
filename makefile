@@ -28,6 +28,9 @@ $(ODIR):
 	mkdir -p $@
 
 docs:
+ifneq ("$(wildcard ./docs)", "")
+	rm -rf docs
+endif
 	doxygen .doxygen
 
 clean:
