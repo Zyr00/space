@@ -1,3 +1,11 @@
+/**
+ * @file util.c
+ * @author João Cunha
+ * @brief Utils for the game
+ *
+ * All of the utils needed for the game like the generating
+ * random numbers
+ */
 #include "../includes/util.h"
 #include "../includes/common.h"
 

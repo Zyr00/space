@@ -1,6 +1,17 @@
+/**
+ * @file sound.c
+ * @author João Cunha
+ * @brief Sound controller
+ *
+ * The sound.c file is where the souds and music are
+ * loaded into memory and played
+ */
 #include "../includes/sound.h"
 #include "../includes/common.h"
 
+/**
+ * Load sounds to memory
+ */
 static void loadSounds(void);
 
 Mix_Chunk *sounds[SND_MAX];

@@ -1,11 +1,41 @@
+/**
+ * @file draw.c
+ * @author João Cunha
+ * @brief Render/Draw to screen
+ *
+ * Prepare the scene and draw on the scene
+ */
 #include "../includes/draw.h"
 #include "../includes/common.h"
 
+/**
+ * Draw bullets fired in the game.
+ */
 static void drawBullets(void);
+
+/**
+ * Draw the player and enemies.
+ */
 static void drawFighters(void);
+
+/**
+ * Draw on screen the background stars.
+ */
 static void drawStarfield(void);
+
+/**
+ * Draw debris after explosion.
+ */
 static void drawDebris(void);
+
+/**
+ * Draw a explosion
+ */
 static void drawExplosions(void);
+
+/**
+ * Draw trails of the player and enemies
+ */
 static void drawTrails(void);
 
 void prepareScene() {

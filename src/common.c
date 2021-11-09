@@ -1,3 +1,10 @@
+/**
+ * @file common.c
+ * @author João Cunha
+ * @brief Common functions
+ *
+ * Common stuff.
+ */
 #include "../includes/common.h"
 
 void err(const char* fmt, ...) {

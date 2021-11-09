@@ -1,3 +1,10 @@
+/**
+ * @file input.c
+ * @author João Cunha
+ * @brief Control input
+ *
+ * User input controller
+ */
 #include "../includes/input.h"
 #include "../includes/common.h"
 

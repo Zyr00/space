@@ -16,8 +16,6 @@ HDRS = $(wildcard $(HDIR)/*.h)
 
 BIN = main
 
-
-
 all: $(BIN)
 
 $(BIN): $(ODIRS) $(ODIR) $(HDRS)
@@ -28,6 +26,12 @@ $(ODIR)/%.o: $(SDIR)/%.c $(ODIR)
 
 $(ODIR):
 	mkdir -p $@
+
+docs:
+ifneq ("$(wildcard ./docs)", "")
+	rm -rf docs
+endif
+	doxygen .doxygen
 
 clean:
 	rm -fr $(ODIR)

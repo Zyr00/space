@@ -1,5 +1,13 @@
+/**
+ * @file init.c
+ * @author João Cunha
+ * @brief Initializer for SDL
+ *
+ * Initializes SDL, SDL_Image and SDL_Mixer
+ */
 #include "../includes/init.h"
 #include "../includes/common.h"
+#include "../includes/sound.h"
 
 void initSDL(void) {
   int rendererFlags, windowsFlags;
@@ -20,13 +28,13 @@ void initSDL(void) {
   app.renderer = SDL_CreateRenderer(app.window, -1, rendererFlags);
 
   if (!app.renderer)
-    err("Failed tocreate renderer", SDL_GetError());
+    err("Failed to create renderer", SDL_GetError());
 
   if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) == 0)
-    err("Failed to load suport of images: %s\n", IMG_GetError());
+    err("Failed to load support of images: %s\n", IMG_GetError());
 
   if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) == -1)
-    err("Faild to inicialize SDL Mixer", SDL_GetError());
+    err("Failed to inicialize SDL Mixer", SDL_GetError());
 
   Mix_AllocateChannels(MAX_SND_CHANNELS);
 
@@ -34,7 +42,21 @@ void initSDL(void) {
 }
 
 void finishSDL(void) {
+  int i;
+
   IMG_Quit();
+  Mix_Quit();
+
+  for (i = 0; i < SND_MAX; i++)
+    Mix_FreeChunk(sounds[i]);
+
+  if (music != NULL) {
+    Mix_HaltMusic();
+    Mix_FreeMusic(music);
+  }
+
+  Mix_CloseAudio();
+
   SDL_DestroyRenderer(app.renderer);
   SDL_DestroyWindow(app.window);
   SDL_Quit();

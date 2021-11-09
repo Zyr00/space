@@ -1,3 +1,9 @@
+/**
+ * @file main.c
+ * @author João Cunha
+ *
+ * The main.c file is where the main loop resides
+ */
 #include <stdio.h>
 #include "../includes/main.h"
 #include "../includes/common.h"
@@ -9,6 +15,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+/**
+ *  Cap the frame rate at 60 FPS
+ *
+ *  @param then a pointer with the ticks
+ *  @param remainder the rest.
+ */
 static void capFramerate(long *then, float  *remainder);
 
 App app;
@@ -30,6 +42,8 @@ int main(void) {
   then = SDL_GetTicks();
   remainder = 0;
 
+  atexit(finishSDL);
+
   while (app.running) {
     prepareScene();
     doInput();
@@ -41,8 +55,6 @@ int main(void) {
     // SDL_Delay(16);
     capFramerate(&then, &remainder);
   }
-
-  finishSDL();
 
   return 0;
 }

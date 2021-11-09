@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['screen_5fheight_0',['SCREEN_HEIGHT',['../d5/d64/defs_8h.html#a6974d08a74da681b3957b2fead2608b8',1,'defs.h']]],
+  ['screen_5fwidth_1',['SCREEN_WIDTH',['../d5/d64/defs_8h.html#a2cd109632a6dcccaa80b43561b1ab700',1,'defs.h']]],
+  ['side_2',['side',['../d3/db3/structEntity.html#ae0669cbec77a8525a7f25c3213e7b3bd',1,'Entity']]],
+  ['side_5falien_3',['SIDE_ALIEN',['../d5/d64/defs_8h.html#a4572e7b644844f3870b2f262a196ab1c',1,'defs.h']]],
+  ['side_5fplayer_4',['SIDE_PLAYER',['../d5/d64/defs_8h.html#aec2199753eddb19dd31a258aefce93f3',1,'defs.h']]],
+  ['snd_5falien_5fdie_5',['SND_ALIEN_DIE',['../d5/d64/defs_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a5eea381494f753401ff9e7a36aba7b3e',1,'defs.h']]],
+  ['snd_5falien_5ffire_6',['SND_ALIEN_FIRE',['../d5/d64/defs_8h.html#adf764cbdea00d65edcd07bb9953ad2b7aeb5fe2c5a547f7db21b93f6293c9c0b8',1,'defs.h']]],
+  ['snd_5fgameover_7',['SND_GAMEOVER',['../d5/d64/defs_8h.html#adf764cbdea00d65edcd07bb9953ad2b7ab2f914e2cbe04c30657dbd226486ee9c',1,'defs.h']]],
+  ['snd_5fmax_8',['SND_MAX',['../d5/d64/defs_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a860589e45538076f0214679aaac5d48a',1,'defs.h']]],
+  ['snd_5fplayer_5fdie_9',['SND_PLAYER_DIE',['../d5/d64/defs_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a3b0b39d099bacc9ee7fc972168f53877',1,'defs.h']]],
+  ['snd_5fplayer_5ffire_10',['SND_PLAYER_FIRE',['../d5/d64/defs_8h.html#adf764cbdea00d65edcd07bb9953ad2b7aba0cbb8bd613da4d0bce0f87caead81c',1,'defs.h']]],
+  ['sound_2ec_11',['sound.c',['../d9/d72/sound_8c.html',1,'']]],
+  ['sound_2eh_12',['sound.h',['../d9/d88/sound_8h.html',1,'']]],
+  ['sounds_13',['sounds',['../d9/d72/sound_8c.html#a74a1fd804209605730dd6daeec98bfa5',1,'sound.c']]],
+  ['spacegame_14',['SpaceGame',['../d0/d30/md_README.html',1,'']]],
+  ['speed_15',['speed',['../dd/d6c/structStar.html#ac8da4289b56d5acb5ce3f46b0d7edfd9',1,'Star']]],
+  ['stage_16',['stage',['../dc/d54/common_8h.html#a883f9b9e0d3b0efbf982dc8c1d814ccc',1,'stage():&#160;main.c'],['../d0/d29/main_8c.html#a883f9b9e0d3b0efbf982dc8c1d814ccc',1,'stage():&#160;main.c']]],
+  ['stage_17',['Stage',['../d9/d4f/structStage.html',1,'']]],
+  ['star_18',['Star',['../dd/d6c/structStar.html',1,'']]],
+  ['stars_19',['stars',['../dc/d54/common_8h.html#ab3fec2d5877a34a4e4ca9e25d614fdbb',1,'stars():&#160;main.c'],['../d0/d29/main_8c.html#ab3fec2d5877a34a4e4ca9e25d614fdbb',1,'stars():&#160;main.c']]],
+  ['stopmusic_20',['stopMusic',['../d9/d88/sound_8h.html#a601a252798304b4d195a2e6555902863',1,'stopMusic(void):&#160;sound.c'],['../d9/d72/sound_8c.html#a601a252798304b4d195a2e6555902863',1,'stopMusic(void):&#160;sound.c']]],
+  ['structs_2eh_21',['structs.h',['../d1/d3d/structs_8h.html',1,'']]]
+];

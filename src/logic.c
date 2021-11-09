@@ -1,27 +1,126 @@
+/**
+ * @file logic.c
+ * @author João Cunha
+ * @brief Controls the logic of the game
+ *
+ * This file is responsible for controlling the game
+ * what appends to the enemies and others.
+ */
 #include "../includes/logic.h"
 #include "../includes/common.h"
 #include "../includes/draw.h"
 #include "../includes/sound.h"
 
+/**
+ * Main logic loop calls all other functions
+ */
 static void logic(void);
+
+/**
+ * Initialize the player.
+*/
 static void initPlayer(void);
+
+/**
+ * Restart game.
+ */
 static void resetStage(void);
+
+/**
+ * Player logic.
+ */
 static void doPlayer(void);
+
+/**
+ * Bullet logic
+ */
 static void doBullets(void);
+
+/**
+ * Fighters logic.
+ */
 static void doFighters(void);
+
+/**
+ * Fire bullet from player.
+ */
 static void fireBullet(void);
+
+/**
+ * Bullet collision logic.
+ *
+ * @param e entity to check if hit.
+ *
+ * @return 1 if hit 0 if not
+ */
 static int bulletHitFighter(Entity *);
+
+/**
+ * Spawn enemies.
+ */
 static void spawnEnemies(void);
+
+/**
+ * Clip the player inside the border of the screen
+ */
 static void clipPlayer(void);
+
+/**
+ * Enemy fire bullet
+ */
 static void fireEnemyBullet(Entity *);
+
+/**
+ * Enemies logic
+ */
 static void doEnemies(void);
+
+/**
+ * Initialize the stars in the background
+ */
 static void initStarfield(void);
+
+/**
+ * Stars logic
+ */
 static void doStarfield(void);
+
+/**
+ * Explosion logic.
+ */
 static void doExplosions(void);
+
+/**
+ * Debris logic.
+ */
 static void doDebris(void);
+
+/**
+ * Trail logic.
+ */
 static void doTrail(void);
+
+/**
+ * Add explosion in a position
+ *
+ * @param x the x position of the explosion
+ * @param y the y position of the explosion
+ * @param num the number of explosions.
+ */
 static void addExplosion(int x, int y, int num);
+
+/**
+ * Add debris in a position.
+ *
+ * @param e the entity that the debris is part of
+ */
 static void addDebris(Entity *);
+
+/**
+ * Add trail in a position.
+ *
+ * @param e the entity that the trail is part of
+ */
 static void addTrail(Entity *);
 
 
