@@ -67,6 +67,7 @@ typedef struct {
   Explosion explosionHead, *explosionTail;
   Debris debrisHead, *debrisTail;
   Trail trailHead, *trailTail;
+  int score;
 } Stage;
 
 typedef struct {

@@ -8,6 +8,7 @@
 #include "../includes/init.h"
 #include "../includes/common.h"
 #include "../includes/sound.h"
+#include "../includes/text.h"
 
 void initSDL(void) {
   int rendererFlags, windowsFlags;
@@ -36,6 +37,13 @@ void initSDL(void) {
   if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) == -1)
     err("Failed to inicialize SDL Mixer", SDL_GetError());
 
+  if (TTF_Init() != 0)
+    err("Error initializing SDL ttf", TTF_GetError());
+
+  font = TTF_OpenFont("./fonts/Pixeled.ttf", 12);
+  if (!font)
+    err("Error initializing font ./fonts/Pixeled.ttf", TTF_GetError());
+
   Mix_AllocateChannels(MAX_SND_CHANNELS);
 
   app.running = 1;
@@ -56,6 +64,8 @@ void finishSDL(void) {
   }
 
   Mix_CloseAudio();
+  TTF_CloseFont(font);
+  TTF_Quit();
 
   SDL_DestroyRenderer(app.renderer);
   SDL_DestroyWindow(app.window);
