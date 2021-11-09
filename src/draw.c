@@ -7,6 +7,7 @@
  */
 #include "../includes/draw.h"
 #include "../includes/common.h"
+#include "../includes/text.h"
 
 /**
  * Draw bullets fired in the game.
@@ -37,6 +38,11 @@ static void drawExplosions(void);
  * Draw trails of the player and enemies
  */
 static void drawTrails(void);
+
+/**
+ * Draw hud of the game
+ */
+static void drawHud(void);
 
 void prepareScene() {
   SDL_SetRenderDrawColor(app.renderer, COLOR_R, COLOR_G, COLOR_B, SDL_ALPHA_OPAQUE);
@@ -82,6 +88,7 @@ void draw(void) {
   drawDebris();
   drawExplosions();
   drawTrails();
+  drawHud();
 }
 
 static void drawBullets(void)  {
@@ -138,4 +145,18 @@ static void drawTrails(void) {
   for (t = stage.trailHead.next; t != NULL; t = t->next) {
     blit(t->texture, t->x, t->y);
   }
+}
+
+static void drawHud(void) {
+  drawText(10, 10, 255, 255, 255, "SCORE: %03d", stage.score);
+
+  if (stage.score > 0 && stage.score == highscore)
+    drawText(960, 10, 0, 255, 0, "HIGH SCORE: %03d", highscore);
+  else
+    drawText(900, 10, 255, 255, 255, "HIGH SCORE: %03d", highscore);
+
+  if (player != NULL)
+    drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, "PLAYER HEALTH: %02d", player->health);
+  else
+    drawText(10, SCREEN_HEIGHT - 50, 255, 0, 0, "PLAYER HEALTH: 00");
 }

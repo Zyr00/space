@@ -1,7 +1,9 @@
 CC = gcc
 
 SDL_CFLAGS := $(shell pkg-config --cflags SDL2_image)
-SDL_LDFALGS := $(shell pkg-config --libs SDL2_image) $(shell pkg-config --libs SDL2_mixer)
+SDL_LDFALGS := $(shell pkg-config --libs SDL2_image) \
+	$(shell pkg-config --libs SDL2_mixer) \
+	$(shell pkg-config --libs SDL2_ttf)
 
 CFLAGS := -Wall -g $(SDL_CFLAGS)
 LDFLAGS := $(SDL_LDFALGS)

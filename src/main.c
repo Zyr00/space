@@ -5,6 +5,8 @@
  * The main.c file is where the main loop resides
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "../includes/main.h"
 #include "../includes/common.h"
 #include "../includes/init.h"
@@ -12,8 +14,7 @@
 #include "../includes/draw.h"
 #include "../includes/input.h"
 #include "../includes/sound.h"
-#include <stdlib.h>
-#include <time.h>
+#include "../includes/text.h"
 
 /**
  *  Cap the frame rate at 60 FPS
@@ -27,17 +28,20 @@ App app;
 Stage stage;
 Entity *player;
 Star stars[MAX_STARS];
+int highscore;
 
 int main(void) {
   long then;
   float remainder;
 
   srand((unsigned) time(NULL));
+  highscore = 0;
   memset(&app, 0, sizeof(App));
 
   initSDL();
   initSounds();
   initStage();
+  initFonts();
 
   then = SDL_GetTicks();
   remainder = 0;

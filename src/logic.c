@@ -10,6 +10,7 @@
 #include "../includes/common.h"
 #include "../includes/draw.h"
 #include "../includes/sound.h"
+#include "../includes/util.h"
 
 /**
  * Main logic loop calls all other functions
@@ -224,6 +225,7 @@ static void resetStage(void) {
 
   enemySpawnTimer = 0;
   stageResetTimer = FPS * 2;
+  stage.score = 0;
 
   SDL_Delay(16);
   playMusic(1);
@@ -427,6 +429,8 @@ static int bulletHitFighter(Entity *b) {
         addExplosion(e->x, e->y, e->type);
         addDebris(e);
       }
+      stage.score++;
+      highscore = MAX(stage.score, highscore);
       return 1;
     }
   }
