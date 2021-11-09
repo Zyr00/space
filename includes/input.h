@@ -3,7 +3,16 @@
 
 #include "common.h"
 
+/**
+ * Read user input
+ */
 void doInput(void);
+
+/**
+ * Read the key pressed
+ *
+ * @param event the SDL_KeyboardEvent to read.
+ */
 void handleKeyPress(SDL_KeyboardEvent *);
 
 #endif

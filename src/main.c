@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+/**
+ *  Cap the frame rate at 60 FPS
+ *
+ *  @param then a pointer with the ticks
+ *  @param remainder the rest.
+ */
 static void capFramerate(long *then, float  *remainder);
 
 App app;

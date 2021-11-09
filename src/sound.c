@@ -1,6 +1,9 @@
 #include "../includes/sound.h"
 #include "../includes/common.h"
 
+/**
+ * Load sounds to memory
+ */
 static void loadSounds(void);
 
 Mix_Chunk *sounds[SND_MAX];

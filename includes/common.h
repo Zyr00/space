@@ -19,6 +19,12 @@ extern Entity *player;
 extern Star stars[MAX_STARS];
 extern SDL_Texture *explosionTexture;
 
-void err(const char *, ...);
+/*
+ * Function to print a errno to the console
+ * @warning does not work on widows
+ *
+ * @param fmt the formatted message to show to the user (like printf)
+ */
+void err(const char *fmt, ...);
 
 #endif
