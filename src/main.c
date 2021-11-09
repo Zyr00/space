@@ -41,7 +41,6 @@ int main(void) {
   initSDL();
   initSounds();
   initStage();
-  initFonts();
 
   then = SDL_GetTicks();
   remainder = 0;
