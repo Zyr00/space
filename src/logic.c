@@ -79,12 +79,7 @@ static void doEnemies(void);
 /**
  * Initialize the stars in the background
  */
-static void initStarfield(void);
-
-/**
- * Stars logic
- */
-static void doStarfield(void);
+void initStarfield(void);
 
 /**
  * Explosion logic.
@@ -100,6 +95,11 @@ static void doDebris(void);
  * Trail logic.
  */
 static void doTrail(void);
+
+/**
+ * Logic for the pods
+ */
+static void doPod(void);
 
 /**
  * Add explosion in a position
@@ -124,11 +124,18 @@ static void addDebris(Entity *);
  */
 static void addTrail(Entity *);
 
+/**
+ * Add new pod.
+ *
+ * @param e the entity that the pod will spawn from
+ */
+static void addPod(int x, int y);
+
 
 static SDL_Texture *playerTexture,
   *playerBulletTexture, *enemyBulletTexture,
   *enemyTexture, *enemyTexture1, *enemyTexture2,
-  *playerTrail, *enemyTrail;
+  *playerTrail, *enemyTrail, *podTexture;
 
 SDL_Texture *explosionTexture;
 
@@ -155,6 +162,7 @@ void initStage(void) {
  enemyBulletTexture = loadTexture("./assets/bullet.png");
 
  explosionTexture = loadTexture("./assets/explosion.png");
+ podTexture = loadTexture("./assets/pod.png");
 
  resetStage();
 }
@@ -171,6 +179,7 @@ static void logic(void) {
   doExplosions();
   doDebris();
   doTrail();
+  doPod();
 
   if (player == NULL && --stageResetTimer <= 0) {
     resetStage();
@@ -213,12 +222,19 @@ static void resetStage(void) {
     free(t);
   }
 
+  while (stage.podsHead.next) {
+    e = stage.podsHead.next;
+    stage.podsHead.next = e->next;
+    free(e);
+  }
+
   memset(&stage, 0, sizeof(Stage));
   stage.fighterTail = &stage.fighterHead;
   stage.bulletTail = &stage.bulletHead;
   stage.explosionTail = &stage.explosionHead;
   stage.debrisTail = &stage.debrisHead;
   stage.trailTail = &stage.trailHead;
+  stage.podsTail = &stage.podsHead;
 
   initPlayer();
   initStarfield();
@@ -378,9 +394,10 @@ static void spawnEnemies(void) {
     e->y = (int) randomNumber(e->h, SCREEN_HEIGHT);
 
     e->dx = -(2 + (rand() % 4));
+    e->dy = -100 + (rand() % 200);
+    e->dy /= 100;
 
     enemySpawnTimer = 30 + (rand() % 60);
-
     addTrail(e);
   }
 }
@@ -414,23 +431,20 @@ static int bulletHitFighter(Entity *b) {
 
   for (e = stage.fighterHead.next; e != NULL; e = e->next) {
     if (e->side != b->side && collision(b->x, b->y, b->w, b->h, e->x, e->y, e->w, e->h)) {
-      if (e == player) {
-        playSound(SND_PLAYER_DIE, CH_PLAYER);
-        if ((e->health - 1) == 0) {
-          stopMusic();
-          playSound(SND_GAMEOVER, CH_GAMEOVER);
-        }
-      } else {
-        playSound(SND_ALIEN_DIE, CH_ANY);
-      }
       b->health = 0;
       e->health--;
       if (e->health == 0) {
         addExplosion(e->x, e->y, e->type);
         addDebris(e);
+        if (e == player) {
+          stopMusic();
+          playSound(SND_PLAYER_DIE, CH_PLAYER);
+          playSound(SND_GAMEOVER, CH_GAMEOVER);
+        } else {
+          playSound(SND_ALIEN_DIE, CH_ANY);
+          addPod(e->x + e->w / 2, e->y + e->h / 2);
+        }
       }
-      stage.score++;
-      highscore = MAX(stage.score, highscore);
       return 1;
     }
   }
@@ -450,6 +464,7 @@ static void doEnemies(void) {
   Entity *e;
 
   for (e = stage.fighterHead.next; e != NULL; e = e->next) {
+    e->y = MIN(MAX(e->y, 0), SCREEN_HEIGHT - e->h);
     if (e != player && player != NULL && --e->reload <= 0) {
       if (e->x > e->h + 100) {
         playSound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
@@ -459,7 +474,7 @@ static void doEnemies(void) {
   }
 }
 
-static void initStarfield(void) {
+void initStarfield(void) {
   int i;
 
   for (i = 0; i < MAX_STARS; i++) {
@@ -469,7 +484,7 @@ static void initStarfield(void) {
   }
 }
 
-static void doStarfield(void) {
+void doStarfield(void) {
   int i;
   for (i = 0; i < MAX_STARS; i++) {
     stars[i].x -= stars[i].speed;
@@ -543,6 +558,55 @@ static void doTrail(void) {
       t = prev;
     }
     prev = t;
+  }
+}
+
+static void doPod(void) {
+  Entity *e, *prev;
+
+  prev = &stage.podsHead;
+
+  for (e = stage.podsHead.next; e != NULL; e = e->next) {
+    if (e->x < 0) {
+      e->x = 0;
+      e->dx = -e->dx;
+    }
+
+    if (e->y < 0) {
+      e->y = 0;
+      e->dy = -e->dy;
+    }
+
+    if (e->x + e->w > SCREEN_WIDTH) {
+      e->x = SCREEN_WIDTH - e->w;
+      e->dx = -e->dx;
+    }
+
+    if (e->y + e->y > SCREEN_HEIGHT) {
+      e->y = SCREEN_HEIGHT - e->y;
+      e->dy = -e->dy;
+    }
+
+    e->x += e->dx;
+    e->y += e->dy;
+
+    if (player != NULL && collision(e->x, e->y, e->w, e->h, player->x, player->y, player->w, player->h)) {
+      if (randomNumber(0, 1) < 0.5)
+        player->health++;
+      e->health = 0;
+      stage.score++;
+      highscore = MAX(stage.score, highscore);
+    }
+
+    if (--e->health <= 0) {
+      if (e == stage.podsTail)
+        stage.podsTail = prev;
+
+      prev->next = e->next;
+      free(e);
+      e = prev;
+    }
+    prev = e;
   }
 }
 
@@ -632,4 +696,25 @@ static void addTrail(Entity *e) {
   t->texture = e == player ? playerTrail : enemyTrail;
   t->e = e;
   t->a = rand() % FPS * 3;
+}
+
+static void addPod(int x, int y) {
+  Entity *e;
+
+  e = (Entity *) malloc(sizeof(Entity));
+  memset(e, 0, sizeof(Entity));
+  stage.podsTail->next = e;
+  stage.podsTail = e;
+
+  e->x = x;
+  e->y = y;
+  e->dx = -(rand() % 5);
+  e->dy = (rand() % 5) - (rand() % 5);
+  e->health = FPS * 10;
+  e->texture = podTexture;
+
+  SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h);
+
+  e->x -= e->w / 2;
+  e->y -= e->h / 2;
 }

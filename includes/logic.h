@@ -8,4 +8,16 @@
  */
 void initStage(void);
 
+/**
+ * Starfield logic
+ */
+void doStarfield(void);
+
+
+/**
+ * Initialize the stars in the background
+ */
+void initStarfield(void);
+
+
 #endif
