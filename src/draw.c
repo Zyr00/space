@@ -20,11 +20,6 @@ static void drawBullets(void);
 static void drawFighters(void);
 
 /**
- * Draw on screen the background stars.
- */
-static void drawStarfield(void);
-
-/**
  * Draw debris after explosion.
  */
 static void drawDebris(void);
@@ -38,6 +33,11 @@ static void drawExplosions(void);
  * Draw trails of the player and enemies
  */
 static void drawTrails(void);
+
+/**
+ * Draw pod
+ */
+static void drawPod(void);
 
 /**
  * Draw hud of the game
@@ -88,6 +88,7 @@ void draw(void) {
   drawDebris();
   drawExplosions();
   drawTrails();
+  drawPod();
   drawHud();
 }
 
@@ -105,7 +106,7 @@ static void drawFighters(void) {
     blit(b->texture, b->x, b->y);
 }
 
-static void drawStarfield(void) {
+void drawStarfield(void) {
   int i, c;
 
   for (i = 0; i < MAX_STARS; i++) {
@@ -147,6 +148,20 @@ static void drawTrails(void) {
   }
 }
 
+static void drawPod(void) {
+  Entity *p;
+
+  SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_ADD);
+  SDL_SetTextureBlendMode(explosionTexture, SDL_BLENDMODE_ADD);
+
+  for (p = stage.podsHead.next; p != NULL; p = p->next) {
+    SDL_SetTextureColorMod(explosionTexture, rand() % 256, rand() % 256, rand() % 256);
+    blit(p->texture, p->x, p->y);
+  }
+
+  SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
+}
+
 static void drawHud(void) {
   drawText(10, 10, 255, 255, 255, "SCORE: %03d", stage.score);
 
@@ -155,8 +170,14 @@ static void drawHud(void) {
   else
     drawText(900, 10, 255, 255, 255, "HIGH SCORE: %03d", highscore);
 
-  if (player != NULL)
-    drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, "PLAYER HEALTH: %02d", player->health);
-  else
+  if (player != NULL) {
+    if (player->health <= 2)
+      drawText(10, SCREEN_HEIGHT - 50, 255, 0, 0, "PLAYER HEALTH: %02d", player->health);
+    else if (player->health <= 7)
+      drawText(10, SCREEN_HEIGHT - 50, 255, 127, 0, "PLAYER HEALTH: %02d", player->health);
+    else
+      drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, "PLAYER HEALTH: %02d", player->health);
+  } else {
     drawText(10, SCREEN_HEIGHT - 50, 255, 0, 0, "PLAYER HEALTH: 00");
+  }
 }

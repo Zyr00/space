@@ -15,6 +15,7 @@
 #include "../includes/input.h"
 #include "../includes/sound.h"
 #include "../includes/text.h"
+#include "../includes/title.h"
 
 /**
  *  Cap the frame rate at 60 FPS
@@ -40,7 +41,8 @@ int main(void) {
 
   initSDL();
   initSounds();
-  initStage();
+  // initStage();
+  initTitle();
 
   then = SDL_GetTicks();
   remainder = 0;

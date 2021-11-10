@@ -44,4 +44,10 @@ void blitRect(SDL_Texture *, SDL_Rect *, const int, const int);
  */
 void draw(void);
 
+/**
+ * Draw on screen the background stars.
+ */
+void drawStarfield(void);
+
+
 #endif
